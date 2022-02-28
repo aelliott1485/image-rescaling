@@ -8,10 +8,9 @@ if (!$matches) {
 $size = intval($size);
 if (($size > 2000) || ($size % 50 != 0))
     die();
-$f = $name . '.' . $ext;
-list($width, $height) = getimagesize($f);
-$src = imagecreatefromstring(file_get_contents($f));
+$src = imagecreatefromstring(file_get_contents($name . '.' . $ext));
 $dst = imagescale($src, $size);
-header("Content-Type: image/$ext");
-imagejpeg($dst, $req);
-imagejpeg($dst);
+$function = 'image' . ($ext == 'jpg' ? 'jpeg' : strtolower($ext));
+header('Content-Type: image/' . strtolower($ext));
+$function($dst, $req);
+$function($dst);    //send the image to the browser
